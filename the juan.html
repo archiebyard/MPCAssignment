@@ -1,0 +1,331 @@
+<head>
+    <meta charset="utf-8">
+        <title>Color Game</title>
+        
+        <script src="tonejs/ToneR11.js"></script>
+        
+        <style>
+            body {
+                background-color: #232323;
+                margin: 0;
+                font-family: sans-serif;
+                font-weight: normal;
+            }
+        
+        .square {
+            width: 30%;
+            background: white;
+            padding-bottom: 30%;
+            float: left;
+            margin: 1%;
+            border-radius: 1%;
+
+        }
+        
+        #container {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        
+        h1 {
+            color: white;
+            line-height: 1.5;
+            text-align: center;
+            background-color: black;
+            margin: 0;
+            padding: 20px 0;
+        }
+        
+        #stripe {
+            background: white;
+            height: 30px;
+            text-align: center;
+            color: black;
+        }
+        
+        .selected {
+            color: white;
+            background: black;
+        }
+        
+        #rgbCode {
+            font-size: 200%;
+        }
+        
+        div#audioElements {
+            display: none;
+        }
+        
+        button {
+            border: none;
+            background: none;
+            text-transform: uppercase;
+            font-family: sans-serif;
+            height: 100%;
+            font-weight: 700;
+            color: black;
+            letter-spacing: 1px;
+            font-size: inherit;
+            outline: none;
+        }
+        
+        button:hover{
+            color: white;
+            background: black;
+        }
+        
+        
+
+            </style>
+        
+            
+        </head>
+    <body>
+        <h1>
+            Click the correct colour!
+            <br>
+            <span id="rgbCode">Red</span>
+            <br>
+            <span id="message"></span>
+        </h1>
+        
+        <div id="audioElements" width="100%">
+            <h2>Audio</h2>
+            <audio controls id="audio1"></audio>
+            <audio controls id="audio2"></audio>
+        </div>
+        
+        <div id="stripe">
+            <button id="reset">New Colour</button>
+        </div>
+        
+        <div id="container">
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+            <div class="square"></div>
+
+        </div>
+        
+        <script charset="utf-8">
+            var numSquares = 9;                                     //number of squares
+            var colours = generateRandomColours(numSquares);          //generate all new colours
+            var square = document.querySelectorAll(".square");
+            var pickedColour = pickColour();                          //assign random colour to picked
+            
+            var rgbCode = document.getElementById("rgbCode");       //get rgbcode to reassign
+            var messageDisplay = document.querySelector("#message");
+            messageDisplay.textContent = "⠀";
+            var resetButton = document.querySelector("#reset");
+            var correctSample = new Tone.Player({
+                "url" : "correct1.wav",
+                "retrigger" : true
+            });
+            
+            var incorrectSample = new Tone.Player({
+                "url" : "incorrect.wav",
+                "retrigger" : true
+            });
+            
+            correctSample.connect(Tone.Master);
+            incorrectSample.connect(Tone.Master);
+            
+                                                              
+            resetButton.addEventListener("click", function(){ //when reset is clicked, this happens
+            
+            colours = generateRandomColours(numSquares);  //generate all new colors
+            
+            pickedColour = pickColour();                  //pick a new random color from the array
+            
+            rgbCode.textContent = rgbToName(pickedColour);
+            console.log(pickedColour);//change colorDisplay to match picked color
+            this.textContent = "New Colour";
+            messageDisplay.textContent = "⠀";            //change colors of squares
+            for (var i = 0; i < square.length; i++) {
+                square[i].style.background = colours[i]; //assign random colours to squares
+            }
+                                         
+            })
+            
+            rgbCode.textContent = rgbToName(pickedColour);
+            console.log(pickedColour);//change colorDisplay to match picked color
+                                                                                           
+            for(var i = 0; i < square.length; i++) {    //add initial colors to squares
+                square[i].style.background = colours[i];
+                square[i].addEventListener("click", function() {    //add click listeners to squares
+                var clickedColour = this.style.background;   //grab colour of picked square
+                                           
+                if (clickedColour === pickedColour) {     //compare colour to picked colour
+                    messageDisplay.textContent = "Well Done!";
+                    resetButton.textContent = "Play Again";
+                    changeColours(clickedColour);
+                    correctSample.start();
+
+                }
+                else{
+                    this.style.background = "#232323";
+                    messageDisplay.textContent = "Try Again";
+                    incorrectSample.start();
+                }
+            })
+        }
+        
+        
+        
+        
+        
+        
+        function rgbToName(pickedColour){
+            
+            if(pickedColour == "rgb(255, 0, 0)") {
+                var colourText = "RED";
+            }
+            else if(pickedColour == "rgb(0, 255, 0)") {
+                var colourText = "GREEN";
+            }
+            else if(pickedColour == "rgb(0, 0, 255)") {
+                var colourText = "BLUE";
+            }
+            else if(pickedColour == "rgb(255, 255, 0)") {
+                var colourText = "YELLOW";
+            }
+            else if(pickedColour == "rgb(255, 120, 0)") {
+                var colourText = "ORANGE";
+            }
+            else if(pickedColour == "rgb(120, 0, 172)") {
+                var colourText = "PURPLE";
+            }
+            else if(pickedColour == "rgb(170, 170, 170)") {
+                var colourText = "GREY";
+            }
+            else if(pickedColour == "rgb(100, 60, 0)") {
+                var colourText = "BROWN";
+            }
+            else if(pickedColour == "rgb(255, 105, 250)") {
+                var colourText = "PINK";
+            }
+            return colourText;
+            
+        }
+        
+        
+        
+        function changeColours(colour){
+            
+            for (var i = 0; i < square.length; i++) {   //loop through all squares
+                
+                square[i].style.background = colour;     //change each color to match given color
+            }
+            
+        }
+        
+        function pickColour(){
+            var random = Math.floor(Math.random() * 9);
+            var ranCol = colours[random];
+            //if(ranCol === "RGB(255, 0, 0)")
+            //{
+            //    var textColour;
+            //}
+            return ranCol;
+        }
+        
+        function generateRandomColours(num){
+            
+            var arr = []                                //make an array
+            
+            for (var i = 0; i < 9; i++) {               //add num random colors to array
+                arr.push(randomColour(i))                 //get random color and push into array
+                arr = shuffle(arr);
+            }
+            
+            return arr;                                 //return that array
+        }
+        
+        function randomColour(i) {
+            if(i == 0) {                //red
+                var r = 255;
+                var g = 0;
+                var b = 0;
+                var textColour = "Red";
+            }
+            else if(i == 1) {           //blue
+                var r = 0;
+                var g = 0;
+                var b = 255;
+                var textColour = "Blue";
+            }
+            else if(i == 2) {           //green
+                var r = 0;
+                var g = 255;
+                var b = 0;
+                var textColour = "Green";
+            }
+            else if(i == 3) {           //yellow
+                var r = 255;
+                var g = 255;
+                var b = 0;
+                var textColour = "Yellow";
+            }
+            else if(i == 4) {           //orange
+                var r = 255;
+                var g = 120;
+                var b = 0;
+                var textColour = "Orange";
+            }
+            else if(i == 5) {           //purple
+                var r = 120;
+                var g = 0;
+                var b = 172;
+                var textColour = "Purple";
+            }
+            else if(i == 6) {           //grey
+                var r = 170;
+                var g = 170;
+                var b = 170;
+                var textColour = "Grey";
+            }
+            else if(i == 7) {           //brown
+                var r = 100;
+                var g = 60;
+                var b = 0;
+                var textColour = "Brown";
+            }
+            else {                       //pink
+                var r = 255;
+                var g = 105;
+                var b = 250;
+                var textColour = "Pink";
+            }
+            
+            
+            return "rgb(" + r +", " + g + ", " + b +")";
+            
+        }
+        
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+            
+            
+            while (0 !== currentIndex) {
+                
+                
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                
+                
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            
+            return array;
+        }
+        
+            </script>
+        
+        </body>
