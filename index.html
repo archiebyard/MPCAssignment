@@ -24,14 +24,14 @@
         
         #container {
             margin: 20px auto;
-            max-width: 500px;
+            max-width: 600px;
         }
         
         h1 {
             color: white;
-            line-height: 1.5;
+            line-height: 1.1;
             text-align: center;
-            background-color: black;
+            background-color: dark-grey;
             margin: 0;
             padding: 20px 0;
         }
@@ -93,6 +93,7 @@
             <h2>Audio</h2>
             <audio controls id="audio1"></audio>
             <audio controls id="audio2"></audio>
+            <audio controls id="audio3"></audio>
         </div>
         
         <div id="stripe">
@@ -132,12 +133,18 @@
                 "retrigger" : true
             });
             
+            var popSample = new Tone.Player({
+                "url" : "pop.wav",
+                "retrigger" : true
+            });
+            
             correctSample.connect(Tone.Master);
             incorrectSample.connect(Tone.Master);
+            popSample.connect(Tone.Master);
             
                                                               
             resetButton.addEventListener("click", function(){ //when reset is clicked, this happens
-            
+            popSample.start();
             colours = generateRandomColours(numSquares);  //generate all new colors
             
             pickedColour = pickColour();                  //pick a new random color from the array
@@ -183,31 +190,31 @@
         function rgbToName(pickedColour){
             
             if(pickedColour == "rgb(255, 0, 0)") {
-                var colourText = "RED";
+                var colourText = "Red";
             }
             else if(pickedColour == "rgb(0, 255, 0)") {
-                var colourText = "GREEN";
+                var colourText = "Green";
             }
             else if(pickedColour == "rgb(0, 0, 255)") {
-                var colourText = "BLUE";
+                var colourText = "Blue";
             }
             else if(pickedColour == "rgb(255, 255, 0)") {
-                var colourText = "YELLOW";
+                var colourText = "Yellow";
             }
             else if(pickedColour == "rgb(255, 120, 0)") {
-                var colourText = "ORANGE";
+                var colourText = "Orange";
             }
             else if(pickedColour == "rgb(120, 0, 172)") {
-                var colourText = "PURPLE";
+                var colourText = "Purple";
             }
             else if(pickedColour == "rgb(170, 170, 170)") {
-                var colourText = "GREY";
+                var colourText = "Grey";
             }
             else if(pickedColour == "rgb(100, 60, 0)") {
-                var colourText = "BROWN";
+                var colourText = "Brown";
             }
             else if(pickedColour == "rgb(255, 105, 250)") {
-                var colourText = "PINK";
+                var colourText = "Pink";
             }
             return colourText;
             
