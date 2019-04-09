@@ -128,16 +128,15 @@
             var numSquares = 9;                //number of squares
             var colours = generateGrey(numSquares);      //generate all new colours
             var square = document.querySelectorAll(".square");   //assign random colour to picked
-            
             var playerScore = document.getElementById("score");
             var rgbCode = document.getElementById("rgbCode");       //get rgbcode to reassign
             var messageDisplay = document.querySelector("#message");
             messageDisplay.textContent = "⠀";
-            ready.textContent = "Are you ready?";
+            ready.textContent = "Ready?";
             var resetButton = document.querySelector("#reset");
 
             var correctSample = new Tone.Player({
-                "url" : "correct1.wav",
+                "url" : "correct.wav",
                 "retrigger" : true
             });
             
@@ -248,7 +247,6 @@
 
                 if (clickedColour === pickedColour) {     //compare colour to picked colour
                     var randomMessage = Math.random();
-                        console.log(randomMessage);
                         if(randomMessage > 0.9) {
                             messageDisplay.textContent = "Well Done!";
                                           
@@ -308,7 +306,7 @@
                 }
                 else{
                     this.style.background = "#232323";
-                                           messageDisplay.textContent = "Try Again :(";
+                    messageDisplay.textContent = "Try Again :(";
                     incorrectSample.start();
                     runningScore = 0;
                     playerScore.textContent = runningScore;
@@ -398,7 +396,7 @@
                 pinkSample.start();
          
             }
-            return;
+            
         }
         
         
