@@ -50,15 +50,16 @@
         }
         
         #rgbCode {
-            font-size: 200%;
+            font-size: 100%;
         }
 
-        #ready {
-            font-size: 200%;
+        #header {
+            font-size: 60%;
         }
+
         
         #message {
-            font-size: 75%;
+            font-size: 60%;
         }
         
         div#audioElements {
@@ -94,7 +95,6 @@
             <span id="header">Press Start to begin...</span>
             <br>
             <span id="rgbCode"></span>
-            <span id="ready"></span>
             <br>
             <span id="message"></span>
         </h1>
@@ -132,8 +132,7 @@
             var playerScore = document.getElementById("score");
             var rgbCode = document.getElementById("rgbCode");       //get rgbcode to reassign
             var messageDisplay = document.querySelector("#message");
-            messageDisplay.textContent = "⠀";
-            ready.textContent = "Ready?";
+            messageDisplay.textContent = "Click the right colour!";
             var resetButton = document.querySelector("#reset");
 
             var correctSample = new Tone.Player({
@@ -230,7 +229,6 @@
             header.textContent = "Click the correct colour!"
             rgbCode.textContent = rgbToName(pickedColour); //change colorDisplay to match picked color
             this.textContent = "Reset";
-            ready.textContent = "⠀"; 
             messageDisplay.textContent = "⠀";            //change colors of squares
             for (var i = 0; i < square.length; i++) {
                 square[i].style.background = colours[i]; //assign random colours to squares
