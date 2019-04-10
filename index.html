@@ -6,20 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         <style>
-            body {
-                background-color: #232323;
+            body {      
+                background-color: white;
                 margin: 0;
                 font-family: sans-serif;
                 font-weight: normal;
             }
         
-        .square {
+        .square {      
             width: 30%;
             background: white;
             padding-bottom: 30%;
             float: left;
             margin: 1%;
-            border-radius: 5%;
+            outline: 2px solid black;
 
         }
         
@@ -30,12 +30,13 @@
         }
         
         h1 {
-            color: white;
+            color: black;
             line-height: 1.3;
             text-align: center;
-            background-color: dark-grey;
+            background-color: white;
             margin: 0;
             padding: 20px 0;
+
         }
         
         #stripe {
@@ -85,15 +86,13 @@
             background: black;
         }
         
-        
 
             </style>
-        
-            
+                  
         </head>
     <body>
         <h1>
-            <span id="header">Press Start to begin...</span>
+            <span id="header">Press Start to begin</span> 
             <br>
             <span id="rgbCode"></span>
             <br>
@@ -126,78 +125,78 @@
         </div>
         
         <script charset="utf-8">
-            var runningScore = 0;
-            var numSquares = 9;                //number of squares
-            var colours = generateGrey(numSquares);      //generate all new colours
-            var square = document.querySelectorAll(".square");   //assign random colour to picked
-            var playerScore = document.getElementById("score");
-            var rgbCode = document.getElementById("rgbCode");       //get rgbcode to reassign
-            var messageDisplay = document.querySelector("#message");
-            messageDisplay.textContent = "Click the right colour!";
-            var resetButton = document.querySelector("#reset");
+            var runningScore = 0;       //Initialise score
+            var numSquares = 9;         //Initialise number of squares
+            var colours = generateWhite(numSquares);        //Make all squares white
+            var square = document.querySelectorAll(".square");      //Get all elements of '.square'
+            var playerScore = document.getElementById("score");     //Initialise variable to adjust score
+            var rgbCode = document.getElementById("rgbCode");       //Initialise variable to display target colour
+            var messageDisplay = document.querySelector("#message");        //Get all elements of '#message'
+            messageDisplay.textContent = "Simply click the right colour!";         //Provide brief instructions
+            var resetButton = document.querySelector("#reset");             //Get all elements of '#reset'
 
-            var correctSample = new Tone.Player({
+            var correctSample = new Tone.Player({       //Load 'correct' sample
                 "url" : "correct.wav",
                 "retrigger" : true
             });
             
-            var incorrectSample = new Tone.Player({
+            var incorrectSample = new Tone.Player({     //Load 'incorrect' sample
                 "url" : "incorrect.wav",
                 "retrigger" : true
             });
             
-            var popSample = new Tone.Player({
+            var popSample = new Tone.Player({       //Load 'pop' sample
                 "url" : "pop.wav",
                 "retrigger" : true
             });
             
             
-            var redSample = new Tone.Player({
+            var redSample = new Tone.Player({       //Load 'red' sample
                 "url" : "red.wav",
                 "retrigger" : true
             });
             
-            var greenSample = new Tone.Player({
+            var greenSample = new Tone.Player({     //Load 'green' sample
                 "url" : "green.wav",
                 "retrigger" : true
             });
             
-            var blueSample = new Tone.Player({
+            var blueSample = new Tone.Player({      //Load 'blue' sample
                 "url" : "blue.wav",
                 "retrigger" : true
             });
             
-            var yellowSample = new Tone.Player({
+            var yellowSample = new Tone.Player({        //Load 'yellow' sample
                 "url" : "yellow.wav",
                 "retrigger" : true
             });
             
-            var orangeSample = new Tone.Player({
+            var orangeSample = new Tone.Player({        //Load 'orange' sample
                 "url" : "orange.wav",
                 "retrigger" : true
             });
             
-            var purpleSample = new Tone.Player({
+            var purpleSample = new Tone.Player({        //Load 'purple' sample
                 "url" : "purple.wav",
                 "retrigger" : true
             });
             
-            var greySample = new Tone.Player({
+            var greySample = new Tone.Player({          //Load 'grey' sample
                 "url" : "grey.wav",
                 "retrigger" : true
             });
             
-            var brownSample = new Tone.Player({
+            var brownSample = new Tone.Player({         //Load 'brown' sample
                 "url" : "brown.wav",
                 "retrigger" : true
             });
             
-            var pinkSample = new Tone.Player({
+            var pinkSample = new Tone.Player({          //Load 'pink' sample
                 "url" : "pink.wav",
                 "retrigger" : true
             });
             
-            correctSample.connect(Tone.Master);
+            correctSample.connect(Tone.Master);         //Connect all samples
             incorrectSample.connect(Tone.Master);
             popSample.connect(Tone.Master);
             redSample.connect(Tone.Master);
@@ -211,315 +210,300 @@
             pinkSample.connect(Tone.Master);
 
             
-            playerScore.textContent = runningScore;
-            resetButton.textContent = "Start";
-            
+            playerScore.textContent = runningScore;     //Update display to show users score
+            resetButton.textContent = "Start";          //Set button text to 'Start'
 
 
                                                               
-            resetButton.addEventListener("click", function(){ //when reset is clicked, this happens
-            colours = generateRandomColours(numSquares);
-            pickedColour = pickColour();
-            runningScore = 0;
-            playerScore.textContent = runningScore;
-            popSample.start();
-              //generate all new colors
+            resetButton.addEventListener("click", function(){       //Add click listener to reset button
+                colours = generateRandomColours(numSquares);        //Generate random colours for squares
+                pickedColour = pickColour();        //Pick a random colour                    
+                runningScore = 0;       //Reset score to '0'
+                playerScore.textContent = runningScore;     //Update display to show users score     
+                popSample.start();      //Play 'pop' sample
+                sayColour(pickedColour);        //Read out the new colour to the user
             
-            sayColour(pickedColour);	//pick a new random color from the array
-            
-            header.textContent = "Click the correct colour!"
-            rgbCode.textContent = rgbToName(pickedColour); //change colorDisplay to match picked color
-            this.textContent = "Reset";
-            messageDisplay.textContent = "⠀";            //change colors of squares
-            for (var i = 0; i < square.length; i++) {
-                square[i].style.background = colours[i]; //assign random colours to squares
-            }                         
-            })
-            pickedColour = pickColour();
-            rgbCode.textContent = rgbToName(pickedColour);
-            console.log(pickedColour);//change colorDisplay to match picked color
-                                                                                           
-            for(var i = 0; i < square.length; i++) {    //add initial colors to squares
-                square[i].style.background = colours[i];
-                square[i].addEventListener("click", function() {    //add click listeners to squares
-                var clickedColour = this.style.background;   //grab colour of picked square
-               
-
-                if (clickedColour === pickedColour) {     //compare colour to picked colour
-                    var randomMessage = Math.random();
-                        if(randomMessage > 0.9) {
-                            messageDisplay.textContent = "Well Done!";
-                                          
-                        }
-                        else if(randomMessage > 0.8) {
-                            messageDisplay.textContent = "Amazing!";
-                                          
-                        }
-                        else if(randomMessage > 0.7) {
-                            messageDisplay.textContent = "Brilliant!";
-                                          
-                        }
-                        else if(randomMessage > 0.6) {
-                            messageDisplay.textContent = "Fantastic!";
-                                         
-                        }
-                        else if(randomMessage > 0.5) {
-                            messageDisplay.textContent = "Incredible!";
-                                        
-                        }
-                        else if(randomMessage > 0.4) {
-                            messageDisplay.textContent = "Superb!";
-                                        
-                        }
-                        else if(randomMessage > 0.3) {
-                            messageDisplay.textContent = "Fine work!";
-                                           
-                        }
-                        else if(randomMessage > 0.2) {
-                            messageDisplay.textContent = "That's right!";
-                                    
-                        }
-                        else if(randomMessage > 0.2) {
-                            messageDisplay.textContent = "Great job!";
-                                        
-                        }
-                        else if(randomMessage > 0.1) {
-                            messageDisplay.textContent = "Correct!";
-                                        
-                        }
-                        else {
-                            messageDisplay.textContent = "Wonderful!";
-                        }
-                                           
-                    changeColours(clickedColour);
-                    correctSample.start();
-                    runningScore = runningScore + 1;
-                    playerScore.textContent = runningScore;
-                    colours = generateRandomColours(numSquares);  //generate all new colors
-                    pickedColour = pickColour();
-                    sayColour(pickedColour);
+                header.textContent = "⠀"        //Hide the instructions to start      
+                rgbCode.textContent = rgbToName(pickedColour);      //Convert picked colour to text to display to the user
+                this.textContent = "Reset";     //Set button text to 'Reset'
+                messageDisplay.textContent = "⠀";       //Hide praise message
                     for (var i = 0; i < square.length; i++) {
-                        square[i].style.background = colours[i]; //assign random colours to squares
-                    }
-                    rgbCode.textContent = rgbToName(pickedColour);
-
-                }
-                else{
-                    this.style.background = "#232323";
-                    messageDisplay.textContent = "Try Again :(";
-                    incorrectSample.start();
-                    runningScore = 0;
-                    playerScore.textContent = runningScore;
-                }
+                        square[i].style.background = colours[i];        //Assign random colours to the squares from the array
+                    }                         
             })
+
+
+            pickedColour = pickColour();        //Pick a random colour  
+            rgbCode.textContent = rgbToName(pickedColour);      //Convert picked colour to text to display to the user
+                                                                                           
+                for(var i = 0; i < square.length; i++) {   
+                    square[i].style.background = colours[i];        //Assign random colours to the squares from the array
+
+                    square[i].addEventListener("click", function() {        //Add click listeners to squares
+                    var clickedColour = this.style.background;      //Store the colour of picked square
+               
+
+                        if (clickedColour === pickedColour) {       //Compare colour to picked colour
+                            var randomMessage = Math.random();      //Generate random number
+                                if(randomMessage > 0.9) {       //Randomise message of praise to user
+                                    messageDisplay.textContent = "Well Done!";
+                                                  
+                                }
+                                else if(randomMessage > 0.8) {
+                                    messageDisplay.textContent = "Amazing!";
+                                                  
+                                }
+                                else if(randomMessage > 0.7) {
+                                    messageDisplay.textContent = "Brilliant!";
+                                                  
+                                }
+                                else if(randomMessage > 0.6) {
+                                    messageDisplay.textContent = "Fantastic!";
+                                                 
+                                }
+                                else if(randomMessage > 0.5) {
+                                    messageDisplay.textContent = "Incredible!";
+                                                
+                                }
+                                else if(randomMessage > 0.4) {
+                                    messageDisplay.textContent = "Superb!";
+                                                
+                                }
+                                else if(randomMessage > 0.3) {
+                                    messageDisplay.textContent = "Fine work!";
+                                                   
+                                }
+                                else if(randomMessage > 0.2) {
+                                    messageDisplay.textContent = "That's right!";
+                                            
+                                }
+                                else if(randomMessage > 0.2) {
+                                    messageDisplay.textContent = "Great job!";
+                                                
+                                }
+                                else if(randomMessage > 0.1) {
+                                    messageDisplay.textContent = "Correct!";
+                                                
+                                }
+                                else {
+                                    messageDisplay.textContent = "Wonderful!";
+                                }
+                                           
+                        correctSample.start();      //Play 'correct' sample
+                        runningScore = runningScore + 1;        //Increase score by 1
+                        playerScore.textContent = runningScore;     //Update display with users score
+
+                        colours = generateRandomColours(numSquares);        //Generate all new colors
+                        pickedColour = pickColour();        //Pick a random colour 
+                        sayColour(pickedColour);        //Read out the new colour to the user
+                            for (var i = 0; i < square.length; i++) {
+                                square[i].style.background = colours[i];        //Assign random colours to squares
+                            }
+
+                        rgbCode.textContent = rgbToName(pickedColour);      //Convert picked colour to text to display to the user
+
+                        }
+                        else{
+                            this.style.background = "#FFFFFF";      //'Hide' incorrect colour
+                            messageDisplay.textContent = "Try Again :(";        //Display wrong answer message to user
+                            incorrectSample.start();        //Play 'incorrect' sample
+                            runningScore = 0;       //Reset score to '0'
+                            playerScore.textContent = runningScore;     //Update display to show users score
+                        }
+                })
         }
         
         
         
-        function rgbToName(pickedColour){
+function rgbToName(pickedColour){       //This function is used to convert from an 'rgb(x, x, x)' value to a string, this is then displayed to the user
             
-            if(pickedColour == "rgb(255, 0, 0)") {
-                var colourText = "RED";
+    if(pickedColour == "rgb(255, 0, 0)") {
+        var colourText = "RED";
                
-            }
-            else if(pickedColour == "rgb(0, 255, 0)") {
-                var colourText = "GREEN";
+    }
+    else if(pickedColour == "rgb(0, 255, 0)") {
+        var colourText = "GREEN";
            
-            }
-            else if(pickedColour == "rgb(0, 0, 255)") {
-                var colourText = "BLUE";
+    }
+    else if(pickedColour == "rgb(0, 0, 255)") {
+        var colourText = "BLUE";
               
-            }
-            else if(pickedColour == "rgb(255, 255, 0)") {
-                var colourText = "YELLOW";
+    }
+    else if(pickedColour == "rgb(255, 255, 0)") {
+        var colourText = "YELLOW";
                 
-            }
-            else if(pickedColour == "rgb(255, 120, 0)") {
-                var colourText = "ORANGE";
+    }
+    else if(pickedColour == "rgb(255, 120, 0)") {
+        var colourText = "ORANGE";
               
-            }
-            else if(pickedColour == "rgb(120, 0, 172)") {
-                var colourText = "PURPLE";
+    }
+    else if(pickedColour == "rgb(120, 0, 172)") {
+        var colourText = "PURPLE";
                 
-            }
-            else if(pickedColour == "rgb(170, 170, 170)") {
-                var colourText = "GREY";
+    }
+    else if(pickedColour == "rgb(170, 170, 170)") {
+        var colourText = "GREY";
                 
-            }
-            else if(pickedColour == "rgb(100, 60, 0)") {
-                var colourText = "BROWN";
+    }
+    else if(pickedColour == "rgb(100, 60, 0)") {
+        var colourText = "BROWN";
                
-            }
-            else if(pickedColour == "rgb(255, 105, 250)") {
-                var colourText = "PINK";
+    }
+    else if(pickedColour == "rgb(255, 105, 250)") {
+        var colourText = "PINK";
          
-            }
-            return colourText;
+    }
+
+    return colourText;
             
-        }
+}
 
 
-        function sayColour(pickedColour){
-         	if(pickedColour == "rgb(255, 0, 0)") {
-                redSample.start();
+function sayColour(pickedColour){       //This function is used to play the corresponding sample for the colour displayed to the user
+    if(pickedColour == "rgb(255, 0, 0)") {
+        redSample.start();
                
-            }
-            else if(pickedColour == "rgb(0, 255, 0)") {
-                greenSample.start();
+    }
+    else if(pickedColour == "rgb(0, 255, 0)") {
+        greenSample.start();
            
-            }
-            else if(pickedColour == "rgb(0, 0, 255)") {
-                blueSample.start();
+    }
+    else if(pickedColour == "rgb(0, 0, 255)") {
+        blueSample.start();
               
-            }
-            else if(pickedColour == "rgb(255, 255, 0)") {
-                yellowSample.start();
+    }
+    else if(pickedColour == "rgb(255, 255, 0)") {
+        yellowSample.start();
                 
-            }
-            else if(pickedColour == "rgb(255, 120, 0)") {
-                orangeSample.start();
+    }
+    else if(pickedColour == "rgb(255, 120, 0)") {
+        orangeSample.start();
               
-            }
-            else if(pickedColour == "rgb(120, 0, 172)") {
-                purpleSample.start();
+    }
+    else if(pickedColour == "rgb(120, 0, 172)") {
+        purpleSample.start();
                 
-            }
-            else if(pickedColour == "rgb(170, 170, 170)") {
-                greySample.start();
+    }
+    else if(pickedColour == "rgb(170, 170, 170)") {
+        greySample.start();
                 
-            }
-            else if(pickedColour == "rgb(100, 60, 0)") {
-                brownSample.start();
+    }
+    else if(pickedColour == "rgb(100, 60, 0)") {
+        brownSample.start();
                
-            }
-            else if(pickedColour == "rgb(255, 105, 250)") {
-                pinkSample.start();
+    }
+    else if(pickedColour == "rgb(255, 105, 250)") {
+        pinkSample.start();
          
-            }
+    }
             
-        }
+}
         
         
         
-        function changeColours(colour){
+function changeColours(colour){     //This function is used to loop through all of the squares and assign them each a colour
             
-            for (var i = 0; i < square.length; i++) {   //loop through all squares
+    for (var i = 0; i < square.length; i++) {   
                 
-                square[i].style.background = colour;     //change each color to match given color
-            }
+        square[i].style.background = colour;    
+    }
             
-        }
+}
         
-        function pickColour(){
-            var random = Math.floor(Math.random() * 9);
-            var ranCol = colours[random];
-            return ranCol;
-        }
-        
-        function generateRandomColours(num){
-            
-            var arr = []                                //make an array
-            
-            for (var i = 0; i < 9; i++) {               //add num random colors to array
-                arr.push(randomColour(i))                 //get random color and push into array
-                arr = shuffle(arr);
-            }
-            
-            return arr;                                 //return that array
-        }
+function pickColour(){      //This function is used to randomly select a colour from the stored array, ensuring the colour chosen is randomised eachch time
+    var random = Math.floor(Math.random() * 9);
+    var ranCol = colours[random];
 
-        function generateGrey(num){
-            
-            var arr = []                                //make an array
-            
-            for (var i = 0; i < 9; i++) {               //add num random colors to array
-                arr.push("rgb(35, 35, 35)");                 //get random color and push into array
-                arr = shuffle(arr);
-            }
-            
-            return arr;                                 //return that array
-        }
+    return ranCol;
+}
         
-        function randomColour(i) {
-            if(i == 0) {                //red
-                var r = 255;
-                var g = 0;
-                var b = 0;
-                var textColour = "Red";
-            }
-            else if(i == 1) {           //blue
-                var r = 0;
-                var g = 0;
-                var b = 255;
-                var textColour = "Blue";
-            }
-            else if(i == 2) {           //green
-                var r = 0;
-                var g = 255;
-                var b = 0;
-                var textColour = "Green";
-            }
-            else if(i == 3) {           //yellow
-                var r = 255;
-                var g = 255;
-                var b = 0;
-                var textColour = "Yellow";
-            }
-            else if(i == 4) {           //orange
-                var r = 255;
-                var g = 120;
-                var b = 0;
-                var textColour = "Orange";
-            }
-            else if(i == 5) {           //purple
-                var r = 120;
-                var g = 0;
-                var b = 172;
-                var textColour = "Purple";
-            }
-            else if(i == 6) {           //grey
-                var r = 170;
-                var g = 170;
-                var b = 170;
-                var textColour = "Grey";
-            }
-            else if(i == 7) {           //brown
-                var r = 100;
-                var g = 60;
-                var b = 0;
-                var textColour = "Brown";
-            }
-            else {                       //pink
-                var r = 255;
-                var g = 105;
-                var b = 250;
-                var textColour = "Pink";
-            }
+function generateRandomColours(num){        //This function is used to randomise the colours assigned to each square by putting them into an array and shuffling it
+    var arr = []                                
             
+    for (var i = 0; i < 9; i++) {               
+        arr.push(randomColour(i))                 
+        arr = shuffle(arr);
+    }
+
+    return arr;                                 
+}
+
+function generateWhite(num){        //This function is used to set all of the squares to white when the page is first loaded      
+    var arr = []                                
             
-            return "rgb(" + r +", " + g + ", " + b +")";
+    for (var i = 0; i < 9; i++) {               
+        arr.push("rgb(255, 255, 255)");                 
+        arr = shuffle(arr);
+    }
             
-        }
+    return arr;                                 
+}
         
-        function shuffle(array) {
-            var currentIndex = array.length, temporaryValue, randomIndex;
-            
-            
-            while (0 !== currentIndex) {
-                
-                
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
-                
-                
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-            }
-            
-            return array;
-        }
+function randomColour(i) {      //This function is used to preemptively declare the 9 colours which can later be randomised
+    if(i == 0) {                
+        var r = 255;
+        var g = 0;
+        var b = 0;
+    }
+    else if(i == 1) {           
+        var r = 0;
+        var g = 0;
+        var b = 255;
+    }
+    else if(i == 2) {           
+        var r = 0;
+        var g = 255;
+        var b = 0;
+    }
+    else if(i == 3) {           
+        var r = 255;
+        var g = 255;
+        var b = 0;
+    }
+    else if(i == 4) {           
+        var r = 255;
+        var g = 120;
+        var b = 0;
+    }
+    else if(i == 5) {           
+        var r = 120;
+        var g = 0;
+        var b = 172;
+    }
+    else if(i == 6) {           
+        var r = 170;
+        var g = 170;
+        var b = 170;
+    }
+    else if(i == 7) {           
+        var r = 100;
+        var g = 60;
+        var b = 0;
+    }
+    else {                       
+        var r = 255;
+        var g = 105;
+        var b = 250;
+    }
+     
+    return "rgb(" + r +", " + g + ", " + b +")";
+}
         
-            </script>
+function shuffle(array) {       //This function is used to take the values from the array of colours and rearrage it to produce random square colours to the user
+    var currentIndex = array.length, temporaryValue, randomIndex;
+                  
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+                
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+            
+    return array;
+}
         
-        </body>
+    </script>
+        
+</body>
