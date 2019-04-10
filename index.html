@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-        <title>Colour Game</title>
+        <title>Colour Game :)</title>
         
         <script src="tonejs/ToneR11.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -195,6 +195,11 @@
                 "url" : "pink.wav",
                 "retrigger" : true
             });
+
+            var fanfareSample = new Tone.Player({          //Load 'fanfare' sample
+                "url" : "fanfare.wav",
+                "retrigger" : true
+            });
             
             correctSample.connect(Tone.Master);         //Connect all samples
             incorrectSample.connect(Tone.Master);
@@ -208,6 +213,7 @@
             greySample.connect(Tone.Master);
             brownSample.connect(Tone.Master);
             pinkSample.connect(Tone.Master);
+            fanfareSample.connect(Tone.Master);
 
             
             playerScore.textContent = runningScore;     //Update display to show users score
@@ -289,9 +295,14 @@
                                     messageDisplay.textContent = "Wonderful!";
                                 }
                                            
-                        correctSample.start();      //Play 'correct' sample
                         runningScore = runningScore + 1;        //Increase score by 1
                         playerScore.textContent = runningScore;     //Update display with users score
+                        if(runningScore%10 == 0){
+                            fanfareSample.start();      //Play 'fanfare' sample
+                        }
+                        else {
+                            correctSample.start();      //Play 'correct' sample
+                        }
 
                         colours = generateRandomColours(numSquares);        //Generate all new colors
                         pickedColour = pickColour();        //Pick a random colour 
